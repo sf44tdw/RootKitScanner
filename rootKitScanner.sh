@@ -7,9 +7,8 @@ LOGDIR=/var/log/chkrootkit-scan-log/
 LOGFILE=${LOGDIR}`date +%Y%m%d%H%M%S`.log
 INFECTED_LOGFILE={$LOGFILE}_INFECTED.log
 
-if [ -e ${LOGDIR} ]; then
-else
-    `mkdir ${LOGDIR}`
+if [ ! -e ${LOGDIR} ]; then
+`mkdir ${LOGDIR}`
 fi
 
 #多重起動防止機講
@@ -48,7 +47,7 @@ grep INFECTED ${LOGFILE} > ${INFECTED_LOGFILE}
 
 chmod o+r ${LOGFILE}
 
-if [ ! -e ${INFECTED_LOGFILE}]; then
+if [  -e ${INFECTED_LOGFILE} ]; then
 chmod o+r ${INFECTED_LOGFILE}
 fi
 
