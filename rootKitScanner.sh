@@ -8,6 +8,7 @@ LOGFILE=${LOGDIR}`date +%Y%m%d%H%M%S`.log
 INFECTED_LOGFILE={$LOGFILE}_INFECTED.log
 
 if [ -e ${LOGDIR} ]; then
+else
     `mkdir ${LOGDIR}`
 fi
 
