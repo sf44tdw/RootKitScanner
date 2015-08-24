@@ -1,14 +1,22 @@
 #!/bin/bash
 
-PATH=/usr/bin:/bin
+PATH=/usr/bin:/bin:/root/bin
 
 LOGDIR=/var/log/chkrootkit-scan-log/
 
 LOGFILE=${LOGDIR}`date +%Y%m%d%H%M%S`.log
 INFECTED_LOGFILE={$LOGFILE}_INFECTED.log
 
+EMERCOMDIR=/root/chkrootkitcmd
+
 if [ ! -e ${LOGDIR} ]; then
 `mkdir ${LOGDIR}`
+fi
+
+#退避先が無いときのみ、chkrootkit使用コマンドを退避先ディレクトリへコピー
+if [ ! -e ${EMERCOMDIR} ]; then
+`mkdir ${EMERCOMDIR}`
+cp `which --skip-alias awk cut echo egrep find head id ls netstat ps strings sed ssh uname` ${EMERCOMDIR}/
 fi
 
 #多重起動防止機講
@@ -27,7 +35,7 @@ PARAM_DATE_NUM=10
 find ${LOGDIR} -name "*.log" -type f -mtime +${PARAM_DATE_NUM} -exec rm -f {} \;
 
 # chkrootkit実行
-chkrootkit > ${LOGFILE}
+chkrootkit -p ${EMERCOMDIR}|grep INFECTED > ${LOGFILE}
 
 # SMTPSのbindshell誤検知対応
 if [ ! -z "$(grep 465 ${LOGFILE})" ] && \
