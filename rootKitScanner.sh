@@ -7,6 +7,10 @@ LOGDIR=/var/log/chkrootkit-scan-log/
 LOGFILE=${LOGDIR}`date +%Y%m%d%H%M%S`.log
 INFECTED_LOGFILE={$LOGFILE}_INFECTED.log
 
+if [ -e ${LOGDIR} ]; then
+    `mkdir ${LOGDIR}`
+fi
+
 #多重起動防止機講
 SCRIPT_PID=${LOGDIR}/lock.pid
 if [ -f $SCRIPT_PID ]; then
