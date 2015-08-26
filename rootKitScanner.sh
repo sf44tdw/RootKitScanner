@@ -23,7 +23,7 @@ fi
 SCRIPT_PID=${LOGDIR}/lock.pid
 if [ -f $SCRIPT_PID ]; then
   PID=`cat $SCRIPT_PID `
-  if (ps -e | awk '{print $1}' | grep $PID >/dev/null); then
+  if (ps -p $PID >/dev/null); then
     exit
   fi
 fi
