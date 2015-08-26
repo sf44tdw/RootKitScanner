@@ -23,11 +23,8 @@ touch ${LOGFILE}
 
 #多重起動防止機講
 # 同じ名前のプロセスが起動していたら起動しない。
-if [ $$ != "`pgrep -fo $0`" ]
-then
-    echo "既に実行中のため、終了します。" >>${LOGFILE}
-    exit 1;
-fi
+_pname=`basename $0`
+[ $$ != `pgrep -fo $_pname` ] && { echo "既に実行中のため、終了します。" >>${LOGFILE}; exit 9; }
 
 
 # ファイル更新日時が10日を越えたログファイルを削除
