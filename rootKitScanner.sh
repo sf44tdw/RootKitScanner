@@ -19,23 +19,23 @@ if [ ! -e ${EMERCOMDIR} ]; then
 cp `which --skip-alias awk cut echo egrep find head id ls netstat ps strings sed ssh uname` ${EMERCOMDIR}/
 fi
 
+touch ${LOGFILE}
+
 #多重起動防止機講
-SCRIPT_PID=${LOGDIR}/lock.pid
-if [ -f $SCRIPT_PID ]; then
-  PID=`cat $SCRIPT_PID `
-  if (ps -p $PID >/dev/null); then
-    exit
-  fi
+# 同じ名前のプロセスが起動していたら起動しない。
+if [ "" != "`pgrep -fo $0`" ]
+then
+    echo "既に実行中のため、終了します。" >>${LOGFILE}
+    exit 1;
 fi
 
-echo $$ > $SCRIPT_PID
 
 # ファイル更新日時が10日を越えたログファイルを削除
 PARAM_DATE_NUM=10
 find ${LOGDIR} -name "*.log" -type f -mtime +${PARAM_DATE_NUM} -exec rm -f {} \;
 
 # chkrootkit実行
-chkrootkit -p ${EMERCOMDIR}|grep INFECTED > ${LOGFILE}
+chkrootkit -p ${EMERCOMDIR}|grep INFECTED >> ${LOGFILE}
 
 # SMTPSのbindshell誤検知対応
 if [ ! -z "$(grep 465 ${LOGFILE})" ] && \
@@ -59,4 +59,4 @@ if [  -e ${INFECTED_LOGFILE} ]; then
 chmod o+r ${INFECTED_LOGFILE}
 fi
 
-rm $SCRIPT_PID
+
