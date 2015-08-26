@@ -23,8 +23,9 @@ touch ${LOGFILE}
 
 #多重起動防止機講
 # 同じ名前のプロセスが起動していたら起動しない。
-_pname=`basename $0`
-[ $$ != `pgrep -fo $_pname` ] && { echo "既に実行中のため、終了します。" >>${LOGFILE}; exit 9; }
+_lockfile="/tmp/`basename $0`.lock"
+ln -s /dummy $_lockfile 2> /dev/null || { echo 'Cannot run multiple instance.' >&2; exit 9; }
+trap "rm $_lockfile; exit" 1 2 3 15
 
 
 # ファイル更新日時が10日を越えたログファイルを削除
@@ -56,4 +57,4 @@ if [  -e ${INFECTED_LOGFILE} ]; then
 chmod o+r ${INFECTED_LOGFILE}
 fi
 
-
+rm $_lockfile
