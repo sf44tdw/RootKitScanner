@@ -7,7 +7,8 @@ LOGDIR=/var/log/chkrootkit-scan-log/
 LOGFILE=${LOGDIR}`date +%Y%m%d%H%M%S`.log
 INFECTED_LOGFILE={$LOGFILE}_INFECTED.log
 
-EMERCOMDIR=/root/chkrootkitcmd
+#コマンド退避先(基本的にここのコマンドを使う。)
+EMERCOMDIR=`dirname $0`/chkrootkitcmd
 
 if [ ! -e ${LOGDIR} ]; then
 `mkdir ${LOGDIR}`
