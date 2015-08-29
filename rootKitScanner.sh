@@ -22,19 +22,20 @@ cp `which --skip-alias awk cut echo egrep find head id ls netstat ps strings sed
 fi
 
 touch ${LOGFILE}
+echo ${LOGFILE} >> ${LOGFILE}
 
 #多重起動防止機講
 # 同じ名前のプロセスが起動していたら起動しない。
 _lockfile="/tmp/`basename $0`.lock"
-ln -s /dummy $_lockfile 2> /dev/null || { echo 'Cannot run multiple instance.' >&2; exit 9; }
+ln -s /dummy $_lockfile 2> /dev/null || { echo 'Cannot run multiple instance.' >>${LOGFILE}; exit 9; }
 trap "rm $_lockfile; exit" 1 2 3 15
 
 
-# ファイル更新日時が10日を越えたログファイルを削除
+echo " ファイル更新日時が10日を越えたログファイルを削除" >> ${LOGFILE}
 PARAM_DATE_NUM=10
 find ${LOGDIR} -name "*.log" -type f -mtime +${PARAM_DATE_NUM} -exec rm -f {} \;
 
-# chkrootkit実行
+echo "chkrootkit実行" >> ${LOGFILE}
 chkrootkit -p ${EMERCOMDIR}|grep INFECTED >> ${LOGFILE}
 
 # SMTPSのbindshell誤検知対応
@@ -60,3 +61,5 @@ chmod o+r ${INFECTED_LOGFILE}
 fi
 
 rm $_lockfile
+
+echo "完了" >>  ${LOGFILE}
