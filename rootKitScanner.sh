@@ -48,7 +48,7 @@ if [ ! -z "$(grep Suckit ${LOGFILE})" ] && \
         sed -i '/Suckit/d' ${LOGFILE}
 fi
 
-# rootkit検知時のみroot宛メール送信
+# rootkit検知時のみ専用ファイル作成
 [ ! -z "$(grep INFECTED ${LOGFILE})" ] && \
 grep INFECTED ${LOGFILE} > ${INFECTED_LOGFILE}
 
