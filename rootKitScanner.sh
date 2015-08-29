@@ -36,7 +36,7 @@ PARAM_DATE_NUM=10
 find ${LOGDIR} -name "*.log" -type f -mtime +${PARAM_DATE_NUM} -exec rm -f {} \;
 
 echo "chkrootkit実行" >> ${LOGFILE}
-chkrootkit -p ${EMERCOMDIR}|grep INFECTED >> ${LOGFILE}
+chkrootkit -p ${EMERCOMDIR} >> ${LOGFILE}
 
 # SMTPSのbindshell誤検知対応
 if [ ! -z "$(grep 465 ${LOGFILE})" ] && \
