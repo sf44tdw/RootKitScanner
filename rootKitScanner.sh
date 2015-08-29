@@ -9,6 +9,7 @@ INFECTED_LOGFILE={$LOGFILE}_INFECTED.log
 
 #コマンド退避先(基本的にここのコマンドを使う。)
 EMERCOMDIR=`dirname $0`/chkrootkitcmd
+echo ${EMERCOMDIR}
 
 PATH=/usr/bin:/bin:/root/bin:${EMERCOMDIR}
 
