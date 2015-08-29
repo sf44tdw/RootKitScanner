@@ -1,14 +1,12 @@
 #!/bin/bash
 
-
-
 LOGDIR=/var/log/chkrootkit-scan-log/
 
 LOGFILE=${LOGDIR}`date +%Y%m%d%H%M%S`.log
 INFECTED_LOGFILE={$LOGFILE}_INFECTED.log
 
 #コマンド退避先(基本的にここのコマンドを使う。)
-EMERCOMDIR=`dirname $0`/chkrootkitcmd
+EMERCOMDIR=$(cd $(dirname $0);pwd)/chkrootkitcmd
 echo ${EMERCOMDIR}
 
 PATH=/usr/bin:/bin:/root/bin:${EMERCOMDIR}
