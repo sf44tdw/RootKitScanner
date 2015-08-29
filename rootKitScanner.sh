@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PATH=/usr/bin:/bin:/root/bin
+
 
 LOGDIR=/var/log/chkrootkit-scan-log/
 
@@ -9,6 +9,8 @@ INFECTED_LOGFILE={$LOGFILE}_INFECTED.log
 
 #コマンド退避先(基本的にここのコマンドを使う。)
 EMERCOMDIR=`dirname $0`/chkrootkitcmd
+
+PATH=/usr/bin:/bin:/root/bin:${EMERCOMDIR}
 
 if [ ! -e ${LOGDIR} ]; then
 `mkdir ${LOGDIR}`
